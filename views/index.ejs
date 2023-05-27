@@ -1,0 +1,168 @@
+<%- include('partials/_header') %>
+    <%- include('partials/_navigation') %>
+
+        </head>
+
+
+        <body >
+            <h2 class="h2 text-center mt-5 " style="font-size: 60px;">
+                <% let today=new Date();%>
+                <%=today.getDate()%> /
+                <%=today.getMonth()+1%> /
+                <%=today.getFullYear()%>
+               <br> 
+               
+                <%=today.getHours()%> :
+                    <%=today.getMinutes()%>
+            </h2>
+           
+            <% if(user){ %>
+
+                <% if(user.role === 'admin'){ %>
+                    <h1 class="h1 text-center mt-5 d-block">
+                        Admin  <%= user.name %>
+                    </h1>
+                    <br>
+                    <% } %>
+                    <% if(user.role === 'user'){ %>
+                        <h1 class="h1 text-center mt-5 d-block">
+                            Merhaba <%= user.name %>
+                        </h1>
+                        <br>
+                        <% } %>
+                
+
+                <form method="GET" id="site-searchform" action="/">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-5 mt-1" style="margin-top: 12px !important;">
+
+
+                                <div class="form-group"> <!-- Date input -->
+                                    <label class="control-label" for="date">Search Date</label>
+                                    <input class="form-control" id="date" name="search" placeholder="MM/DD/YYY"
+                                        type="date" />
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-4 mt-5">
+                                <button> <i class="fa-solid fa-magnifying-glass fa-2xl "></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+               
+                
+
+                <div class="container mt-5">
+                    <div class="row">
+                        
+                        <% let today=new Date();%>
+                      
+                            <% let dateCalculater;%>
+                                <% for (let i=0; i<toDo.length;i++){ %>
+                                    <h1>
+                                        <!-- <%= toDo[i].theTime.toDateString() %> -->
+                                    </h1>
+                                    <h1>
+
+                                        <!-- <%=today.getFullYear() %> -->
+                                    </h1>
+                                    <%let Difference_In_Time=toDo[i].theTime.getTime()- today.getTime()%>
+                                        <h1>
+
+                                            <%let difDay=Math.round(Difference_In_Time / (1000 * 3600 * 24)) %>
+
+                                        </h1>
+
+                                        <div class="card text-center m-3">
+                                            <div class="card-header">
+                                                <%= toDo[i].theTime.toDateString() %> -
+                                                    <%= toDo[i].finishTime.toDateString() %>
+                                                        <br>
+                                                        <%= toDo[i].theTime.getHours() %>:<%=
+                                                                toDo[i].theTime.getMinutes() %>
+                                                                -
+                                                                <%= toDo[i].finishTime.getHours() %>:<%=
+                                                                        toDo[i].finishTime.getMinutes() %>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <%= toDo[i].title %>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <%= toDo[i].description %>
+                                                </p>
+                                                <a href="/toDo/<%= toDo[i]._id %>?_method=DELETE"
+                                                    onclick="return confirm('ARE YOU SURE')"
+                                                    class="btn btn-danger m-2 text-white"><span>DELETE</span></a>
+                                                <a href="/toDo/update/<%=toDo[i]._id%>"
+                                                    class="btn btn-warning m-2 text-white"><span>UPDATE</span></a>
+                                            </div>
+                                            <div class="card-footer text-muted">
+                                                <%=difDay %> days
+                                                <div class="<%=difDay !== 0 && 'd-none' %>" style="color: brown;">
+                                                    Uyarı bu etkinlik için son gün !!!
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                        
+
+                                        <%}%>
+                    </div>
+                </div>
+                <% if(user.role ==='admin'){ %>
+                    
+                    <div class="container mt-5 mb-5">
+                        <h2>Users</h2>
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let i=0; i< users.length; i++) { %>
+                                        <tr>
+                                            <th scope="row">
+                                                <%=users[i]._id %>
+                                            </th>
+                                            <th>
+                                                <%=users[i].name %>
+                                            </th>
+                                            <td>
+                                                <%=users[i].email %>
+                                            </td>
+                                            <td>
+                                                <%=users[i].role %>
+                                            </td>
+                                            <td><a href="/users/<%= users[i]._id %>?_method=DELETE"
+                                                    onclick="return confirm('ARE YOU SURE')"
+                                                    class="btn btn-danger rounded-0 text-white"><span>DELETE</span></a>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <% } %>
+                <% } %>
+               
+                <% function alertFunc(difDay , name) { if(difDay <= 1 && difDay >=0)  
+                    return name ;
+                    
+                } %>
+        </body>
+
+        </html>
