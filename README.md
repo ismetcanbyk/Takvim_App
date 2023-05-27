@@ -1,1 +1,7 @@
-"# Takvim_App" 
+# Takvim App
+
+## Yazılım yapımı dersi final projesi. 
+
+
+
+
